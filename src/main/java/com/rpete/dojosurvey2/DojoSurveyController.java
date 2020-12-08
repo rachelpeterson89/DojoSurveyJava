@@ -44,7 +44,11 @@ public class DojoSurveyController {
 		count += 1;
 		// set count back in session
 		session.setAttribute("count", count);
-		return "redirect:/result";
+		if (session.getAttribute("languageInput").equals("Java")) {
+			return "redirect:/java";
+		} else {
+			return "redirect:/result";
+		}
 	}
 	
 	@RequestMapping("/result")
@@ -65,5 +69,24 @@ public class DojoSurveyController {
 		model.addAttribute("counter", count);
 //		System.out.println("name in result " + displayName);
 		return "result.jsp";
+	}
+	
+	@RequestMapping("/java")
+	public String java(HttpSession session, Model model) {
+		// get session
+		String displayName = (String) session.getAttribute("nameInput");
+		String displayLocation = (String) session.getAttribute("locationInput");
+		String displayLanguage = (String) session.getAttribute("languageInput");
+		String displayComment = (String) session.getAttribute("commentInput");
+		// get count from session
+		Integer count = (Integer) session.getAttribute("count");
+		// add session data to model attribute
+		model.addAttribute("name", displayName);
+		model.addAttribute("location", displayLocation);
+		model.addAttribute("language", displayLanguage);
+		model.addAttribute("comment", displayComment);
+		// add count to model
+		model.addAttribute("counter", count);
+		return "javaResult.jsp";
 	}
 }
